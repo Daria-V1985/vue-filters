@@ -1,35 +1,93 @@
 <template>
-  <div class="filter-catalog__item">
-    <div class="filter-catalog__item-title">size (Inches)</div>
     <div class="filter-catalog__item-content content-item">
       <div class="content-item__container">
         <div class="content-item__sizes">
-          <div class="content-item__size content-item__size-text--osfa">
-            osfa
-          </div>
-          <div class="content-item__size content-item__size-text--w26">w26</div>
-          <div class="content-item__size content-item__size-text--w27">w27</div>
-          <div class="content-item__size content-item__size-text--w28">w28</div>
-          <div class="content-item__size content-item__size-text--w29">w29</div>
-          <div class="content-item__size content-item__size-text--w30">w30</div>
-          <div class="content-item__size content-item__size-text--w31 active">
-            w31
-          </div>
-          <div class="content-item__size content-item__size-text--w32">w32</div>
-          <div class="content-item__size content-item__size-text--w33">w33</div>
-          <div class="content-item__size content-item__size-text--w34">w34</div>
-          <div class="content-item__size content-item__size-text--w35">w35</div>
-          <div class="content-item__size content-item__size-text--w36">w36</div>
-          <div class="content-item__size content-item__size-text--w38">w38</div>
-          <div class="content-item__size content-item__size-text--w40">w40</div>
-          <div class="content-item__size content-item__size-text--w42">w42</div>
-          <div class="content-item__size content-item__size-text--w44">w44</div>
-          <div class="content-item__size content-item__size-text--w46">w46</div>
-          <div class="content-item__size content-item__size-text--w48">w48</div>
-          <div class="content-item__size content-item__size-text--w50">w50</div>
-          <div class="content-item__size content-item__size-text--w52">w52</div>
+          <Size 
+            v-for="size in sizes"
+            :key="size.id"
+            :name="size.name"
+          />
         </div>
       </div>
     </div>
-  </div>
 </template>
+
+<script>
+import Size from "@/components/Size.vue";
+
+export default {
+  name: "SizeFilter",
+  components: {
+    Size,
+  },
+  props: {
+    sizes: Array,
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_variables.scss";
+
+.content-item {
+  text-transform: uppercase;
+  overflow: hidden;
+  //display: none;
+  transition: all 0.25s ease;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  &__sizes {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  &__size {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $mainColorThree;
+    border: 1px solid $mainColorThree;
+    cursor: pointer;
+    transition: border 0.1s ease;
+    &:hover,
+    &.active {
+      color: $mainColorOne;
+      border: 2px solid $mainColorOne;
+      transition: border 0.1s ease;
+    }
+  }
+  &__colors {
+    width: 85%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  &__border {
+    width: 27px;
+    height: 27px;
+    border: 1px solid transparent;
+    transition: border 0.1s ease;
+    position: relative;
+    &:hover,
+    &.active {
+      border: 2px solid $mainColorOne;
+      transition: border 0.1s ease;
+    }
+  }
+  &__color {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    position: absolute;
+    top: 48%;
+    left: 49%;
+    transform: translate(-50%, -50%);
+  }
+}
+</style>
