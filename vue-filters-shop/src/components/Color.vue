@@ -1,5 +1,5 @@
 <template>
-  <div class="content-item__border">
+  <div class="content-item__border" @click="toggleActive" :class="{ active: isActive }">
     <div class="content-item__color" :style="'background-color:' + background"></div>
   </div>
 </template>
@@ -8,7 +8,17 @@
 export default {
   props: {
     background: String,
-  }
+  },
+  data() {
+    return {
+      isActive: false,
+    };
+  },
+  methods: {
+    toggleActive() {
+      this.isActive = !this.isActive;
+    },
+  },
 };
 </script>
 

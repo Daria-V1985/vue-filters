@@ -45,49 +45,5 @@ export default {
     flex-wrap: wrap;
     gap: 10px;
   }
-  &__size {
-    width: 46px;
-    height: 46px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $mainColorThree;
-    border: 1px solid $mainColorThree;
-    cursor: pointer;
-    transition: border 0.1s ease;
-    &:hover,
-    &.active {
-      color: $mainColorOne;
-      border: 2px solid $mainColorOne;
-      transition: border 0.1s ease;
-    }
-  }
-  &__colors {
-    width: 85%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-  &__border {
-    width: 27px;
-    height: 27px;
-    border: 1px solid transparent;
-    transition: border 0.1s ease;
-    position: relative;
-    &:hover,
-    &.active {
-      border: 2px solid $mainColorOne;
-      transition: border 0.1s ease;
-    }
-  }
-  &__color {
-    width: 17px;
-    height: 17px;
-    cursor: pointer;
-    position: absolute;
-    top: 48%;
-    left: 49%;
-    transform: translate(-50%, -50%);
-  }
 }
 </style>

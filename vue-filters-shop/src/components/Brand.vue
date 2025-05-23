@@ -9,6 +9,7 @@
 export default {
   props: {
     name: String,
+    isActive: Boolean,
   }
 };
 </script>
