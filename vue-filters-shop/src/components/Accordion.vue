@@ -88,10 +88,10 @@ export default {
     const openAccordion = ref([]);
 
     const filterItems = [
-      { title: 'Brand', component: 'BrandFilter', props: { brands: "brands" } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: "sizes" } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: "lengths" } },
-      { title: 'Color', component: 'ColorFilter', props: { colors: "colors" } },
+      { title: 'Brand', component: 'BrandFilter', props: { brands: ref([]) } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: ref([]) } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: ref([]) } },
+      { title: 'Color', component: 'ColorFilter', props: { colors: ref([]) } },
       { title: 'Price Range', component: 'PriceFilter', props: {} },
     ]
 
