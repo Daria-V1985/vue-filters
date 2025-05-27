@@ -1,6 +1,6 @@
 <template>
     <div class="content-item__checkbox checkbox">
-      <input :id="name" class="checkbox__input" type="checkbox" />
+      <input :id="name" class="checkbox__input" type="checkbox" v-model="isChecked"/>
       <label :for="name" class="checkbox__label">{{ name }}</label>
     </div>
 </template>
@@ -9,7 +9,11 @@
 export default {
   props: {
     name: String,
-    isActive: Boolean,
+  },
+  data() {
+    return {
+      isChecked: false
+    };
   }
 };
 </script>

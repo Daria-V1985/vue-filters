@@ -2,7 +2,7 @@
   <section class="catalog">
     <div class="catalog__container">
       <div class="catalog__body">
-        <FiltersList class="catalog__filters filter-catalog" />
+        <FiltersList class="catalog__filters filter-catalog"/>
         <CardList class="catalog__products products" :items="items" />
       </div>
     </div>

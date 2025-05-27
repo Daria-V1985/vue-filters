@@ -1,15 +1,13 @@
 <template>
-    <div class="filter-catalog__item-content content-item">
-      <div class="content-item__container">
-        <div class="content-item__price price-filter">
-          <div class="price-filter__slider">
-            <span class="price-filter__range min">0.00 eur</span>
-            <span class="price-filter__range max">100.00 eur</span>
-            <Slider v-model="value" class="price-filter__track track" />
-          </div>
-        </div>
+  <div class="content-item__container">
+    <div class="content-item__price price-filter">
+      <div class="price-filter__slider">
+        <span class="price-filter__range min">0.00 eur</span>
+        <span class="price-filter__range max">100.00 eur</span>
+        <Slider v-model="value" class="price-filter__track track" />
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -30,10 +28,6 @@ export default {
 @import "../assets/scss/_variables.scss";
 
 .content-item {
-  text-transform: uppercase;
-  overflow: hidden;
-  //display: none;
-  transition: all 0.25s ease;
   &__container {
     display: flex;
     flex-direction: column;
