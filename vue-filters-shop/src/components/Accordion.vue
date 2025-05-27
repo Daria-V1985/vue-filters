@@ -17,51 +17,11 @@
 </template>
 
 <script>
-import BrandFilter from './BrandFilter.vue'
-import SizeFilter from './SizeFilter.vue'
-import LengthFilter from './LengthFilter.vue'
-import ColorFilter from './ColorFilter.vue'
-import PriceFilter from './PriceFilter.vue'
-
-export default {
-  name: "Accordion",
-  components: {
-    BrandFilter,
-    SizeFilter,
-    LengthFilter,
-    ColorFilter,
-    PriceFilter,
-  },
-  setup() {
-    const openAccordion = ref([]);
-
-    const filterItems = [
-      { title: 'Brand', component: 'BrandFilter', props: { brands: [] } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: [] } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: [] } },
-      { title: 'Color', component: 'ColorFilter', props: { colors: [] } },
-      { title: 'Price Range', component: 'PriceFilter', props: {} },
-    ]
-
-    function toggle(index) {
-      if (openAccordion.value.includes(index)) {
-        openAccordion.value = openAccordion.value.filter(i => i !== index)
-      } else {
-        openAccordion.value.push(index)
-      }
-    }
-
-    function isOpen(index) {
-      return openAccordion.value.includes(index)
-    }
-
-    return {
-      filterItems,
-      toggle,
-      isOpen,
-    }
-  }
-}
+import BrandFilter from '@/components/BrandFilter.vue'
+import SizeFilter from '@/components/SizeFilter.vue'
+import LengthFilter from '@/components/LengthFilter.vue'
+import ColorFilter from '@/components/ColorFilter.vue'
+import PriceFilter from '@/components/PriceFilter.vue'
 
 import { onMounted, ref } from "vue";
 import axios from "axios";
@@ -114,6 +74,46 @@ onMounted(async () => {
     console.log(error);
   }
 });
+
+export default {
+  name: "Accordion",
+  components: {
+    BrandFilter,
+    SizeFilter,
+    LengthFilter,
+    ColorFilter,
+    PriceFilter,
+  },
+  setup() {
+    const openAccordion = ref([]);
+
+    const filterItems = [
+      { title: 'Brand', component: 'BrandFilter', props: { brands: "brands" } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: "sizes" } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: "lengths" } },
+      { title: 'Color', component: 'ColorFilter', props: { colors: "colors" } },
+      { title: 'Price Range', component: 'PriceFilter', props: {} },
+    ]
+
+    function toggle(index) {
+      if (openAccordion.value.includes(index)) {
+        openAccordion.value = openAccordion.value.filter(i => i !== index)
+      } else {
+        openAccordion.value.push(index)
+      }
+    }
+
+    function isOpen(index) {
+      return openAccordion.value.includes(index)
+    }
+
+    return {
+      filterItems,
+      toggle,
+      isOpen,
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>
