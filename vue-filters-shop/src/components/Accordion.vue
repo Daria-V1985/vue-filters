@@ -36,36 +36,38 @@ export default {
     PriceFilter,
   },
   setup() {
-    const openAccordion = ref([]);
-    const brands = ref([]);
+
     const sizes = ref([]);
     const colors = ref([]);
+    const brands = ref([]);
     const lengths = ref([]);
 
     onMounted(async () => {
       try {
-        const [brands, sizes, colors, lengths] = await Promise.all([
+        const [brandsResponce, sizesResponce, colorsResponce, lengthsResponce] = await Promise.all([
           axios.get("https://ba8e5ca6f7d01757.mokky.dev/brands"),
           axios.get("https://ba8e5ca6f7d01757.mokky.dev/sizes"),
           axios.get("https://ba8e5ca6f7d01757.mokky.dev/colors"),
           axios.get("https://ba8e5ca6f7d01757.mokky.dev/lengths"),
         ]);
-        brands.value = brands.data;
-        sizes.value = sizes.data;
-        colors.value = colors.data;
-        lengths.value = lengths.data;
+        brands.value = brandsResponce.data;
+        sizes.value = sizesResponce.data;
+        colors.value = colorsResponce.data;
+        lengths.value = lengthsResponce.data;
       } catch (error) {
         console.log(error);
       }
     });
 
-    const filterItems = [
+    const openAccordion = ref([]);
+
+    const filterItems = ref([
       { title: 'Brand', component: 'BrandFilter', props: { brands } },
       { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes } },
       { title: 'Dress Length', component: 'LengthFilter', props: { lengths } },
       { title: 'Color', component: 'ColorFilter', props: { colors } },
       { title: 'Price Range', component: 'PriceFilter', props: {} },
-    ]
+    ]);
 
     console.log(filterItems);
 
