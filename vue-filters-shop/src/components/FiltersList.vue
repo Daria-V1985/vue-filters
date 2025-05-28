@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import Accordion from "./Accordion.vue";
+import Accordion from "@/components/Accordion.vue";
 </script>
 
 <style lang="scss" scoped>

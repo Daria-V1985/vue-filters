@@ -26,55 +26,6 @@ import PriceFilter from '@/components/PriceFilter.vue'
 import { onMounted, ref } from "vue";
 import axios from "axios";
 
-const sizes = ref([]);
-const colors = ref([]);
-const brands = ref([]);
-const lengths = ref([]);
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      "https://ba8e5ca6f7d01757.mokky.dev/sizes",
-    );
-    sizes.value = data;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      "https://ba8e5ca6f7d01757.mokky.dev/colors"
-    );
-    colors.value = data;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      "https://ba8e5ca6f7d01757.mokky.dev/brands"
-    );
-    brands.value = data;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-onMounted(async () => {
-  try {
-    const { data } = await axios.get(
-      "https://ba8e5ca6f7d01757.mokky.dev/lengths"
-    );
-    lengths.value = data;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 export default {
   name: "Accordion",
   components: {
@@ -86,14 +37,37 @@ export default {
   },
   setup() {
     const openAccordion = ref([]);
+    const brands = ref([]);
+    const sizes = ref([]);
+    const colors = ref([]);
+    const lengths = ref([]);
+
+    onMounted(async () => {
+      try {
+        const [brands, sizes, colors, lengths] = await Promise.all([
+          axios.get("https://ba8e5ca6f7d01757.mokky.dev/brands"),
+          axios.get("https://ba8e5ca6f7d01757.mokky.dev/sizes"),
+          axios.get("https://ba8e5ca6f7d01757.mokky.dev/colors"),
+          axios.get("https://ba8e5ca6f7d01757.mokky.dev/lengths"),
+        ]);
+        brands.value = brands.data;
+        sizes.value = sizes.data;
+        colors.value = colors.data;
+        lengths.value = lengths.data;
+      } catch (error) {
+        console.log(error);
+      }
+    });
 
     const filterItems = [
-      { title: 'Brand', component: 'BrandFilter', props: { brands: ref([]) } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: ref([]) } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: ref([]) } },
-      { title: 'Color', component: 'ColorFilter', props: { colors: ref([]) } },
+      { title: 'Brand', component: 'BrandFilter', props: { brands } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths } },
+      { title: 'Color', component: 'ColorFilter', props: { colors } },
       { title: 'Price Range', component: 'PriceFilter', props: {} },
     ]
+
+    console.log(filterItems);
 
     function toggle(index) {
       if (openAccordion.value.includes(index)) {
@@ -160,7 +134,6 @@ export default {
 .content-item {
   text-transform: uppercase;
   overflow: hidden;
-  //display: none;
   transition: all 0.25s ease;
 }
 
