@@ -3,6 +3,7 @@
     v-for="(item, index) in filterItems" 
     :key="index" 
     class="filter-catalog__item"
+    :class="{ active: isOpen(index) }"
   >
     <div
       @click="toggle(index)"
@@ -68,8 +69,6 @@ export default {
       { title: 'Color', component: 'ColorFilter', props: { colors } },
       { title: 'Price Range', component: 'PriceFilter', props: {} },
     ]);
-
-    console.log(filterItems);
 
     function toggle(index) {
       if (openAccordion.value.includes(index)) {

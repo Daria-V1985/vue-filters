@@ -1,6 +1,10 @@
 <template>
     <div class="content-item__checkbox checkbox">
-      <input :id="name" class="checkbox__input" type="checkbox" v-model="isChecked"/>
+      <input :id="name" 
+        class="checkbox__input" 
+        type="checkbox" 
+        :value="brand" 
+        v-model="isChecked"/>
       <label :for="name" class="checkbox__label">{{ name }}</label>
     </div>
 </template>
@@ -14,7 +18,7 @@ export default {
     return {
       isChecked: false
     };
-  }
+  },
 };
 </script>
 

@@ -4,6 +4,7 @@
       v-for="brand in brands"
       :key="brand.id"
       :name="brand.name"
+      @change="val => selectedBrands = val"
     />
   </div>
 </template>
