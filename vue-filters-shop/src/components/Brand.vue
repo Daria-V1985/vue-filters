@@ -1,11 +1,13 @@
 <template>
     <div class="content-item__checkbox checkbox">
-      <input :id="name" 
+      <input :id="value.name" 
         class="checkbox__input" 
         type="checkbox" 
         :value="brand" 
-        v-model="isChecked"/>
-      <label :for="name" class="checkbox__label">{{ name }}</label>
+        v-model="isChecked"
+        @change="onChange"
+      />
+      <label :for="value.name" class="checkbox__label">{{ value.name }}</label>
     </div>
 </template>
 
@@ -13,11 +15,17 @@
 export default {
   props: {
     name: String,
+    value: Object,
   },
   data() {
     return {
       isChecked: false
     };
+  },
+  methods: {
+    onChange() {
+      this.$emit('change', { value: this.value, checked: this.isChecked });
+    },
   },
 };
 </script>

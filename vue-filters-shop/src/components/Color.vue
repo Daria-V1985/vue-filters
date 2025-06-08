@@ -8,11 +8,31 @@
 export default {
   props: {
     background: String,
+    value: String,        
+    modelValue: Array,
   },
   data() {
     return {
       isActive: false,
     };
+  },
+  computed: {
+    isActiveData: {
+      get() {
+        return this.modelValue.includes(this.value);
+      },
+      set(val) {
+        let newValue = [...this.modelValue];
+        if (val) {
+          if (!newValue.includes(this.value)) {
+            newValue.push(this.value);
+          }
+        } else {
+          newValue = newValue.filter(c => c !== this.value);
+        }
+        this.$emit('update:modelValue', newValue);
+      }
+    },
   },
   methods: {
     toggleActive() {

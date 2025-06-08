@@ -4,12 +4,13 @@
       v-for="brand in brands"
       :key="brand.id"
       :name="brand.name"
-      @change="val => selectedBrands = val"
+      :value="brand" 
+      @change="onChange"
     />
   </div>
 </template>
 
-<script>
+<script lang="js">
 import Brand from "@/components/Brand.vue";
 
 export default {
@@ -19,7 +20,23 @@ export default {
   },
   props: {
     brands: Array,
-  }
+    value: Object,
+  },
+  data() {
+    return {
+      selectedBrands: [],
+    };
+  },
+  methods: {
+    onChange({ value, checked }) {
+      if (checked) {
+        this.selectedBrands.push(value);
+      } else {
+        this.selectedBrands = this.selectedBrands.filter(b => b !== value);
+      }
+      this.$emit('change', this.selectedBrands);
+    },
+  },
 };
 </script>
 

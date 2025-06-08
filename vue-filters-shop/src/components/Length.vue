@@ -1,6 +1,12 @@
 <template>
     <div class="content-item__checkbox checkbox">
-      <input :id="item" class="checkbox__input" type="checkbox" v-model="isChecked" />
+      <input 
+        :id="item" 
+        class="checkbox__input" 
+        type="checkbox" 
+        v-model="isChecked"
+        @change="onChange"
+      />
       <label :for="item" class="checkbox__label">{{ item }}</label>
     </div>
 </template>
@@ -14,7 +20,12 @@ export default {
     return {
       isChecked: false
     };
-  }
+  },
+  methods: {
+    onChange() {
+      this.$emit('change', { value: this.name, checked: this.isChecked });
+    },
+  },
 };
 </script>
 

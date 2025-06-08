@@ -4,11 +4,13 @@
       v-for="length in lengths"
       :key="length.id"
       :item="length.item"
+      :value="length" 
+      @change="onChange"
     />
   </div>
 </template>
 
-<script>
+<script >
 import Length from "@/components/Length.vue";
 
 export default {
@@ -18,7 +20,22 @@ export default {
   },
   props: {
     lengths: Array,
-  }
+  },
+    data() {
+    return {
+      selectedLengths: [],
+    };
+  },
+  methods: {
+    onChange({ value, checked }) {
+      if (checked) {
+        this.selectedLengths.push(value);
+      } else {
+        this.selectedLengths = this.selectedLengths.filter(b => b !== value);
+      }
+      this.$emit('change', this.selectedLengths);
+    },
+  },
 };
 </script>
 

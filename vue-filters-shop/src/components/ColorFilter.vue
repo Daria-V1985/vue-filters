@@ -5,6 +5,8 @@
         v-for="color in colors"
         :key="color.id"
         :background="color.background"
+        :value="color.name"
+        v-model="selectedColors"
       />
     </div>
   </div>
@@ -20,7 +22,17 @@ export default {
   },
   props: {
     colors: Array,
-  }
+  },
+  data() {
+    return {
+      selectedColors: [],
+    };
+  },
+  watch: {
+    selectedColors(newColors) {
+      this.$emit('change', newColors);
+    }
+  },
 };
 </script>
 

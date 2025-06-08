@@ -1,28 +1,41 @@
 <template>
   <div class="catalog__filters filter-catalog">
     <div class="filter-catalog__items">
-      <Accordion @change="onFiltersChange" />
+      <Accordion @update:selectedFilters="onFiltersUpdate" />
     </div>
     <button 
-      class="filter-catalog__btn disabled"
-      :class="{ disabled: !hasChanges }" 
-      :disabled="!hasChanges"
-      @click="applyFilters">apply
+      class="filter-catalog__btn"
+      @click="filterCards">
+      apply
     </button>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script>
 import Accordion from "@/components/Accordion.vue";
 
-const selectedFilters = ref({});
-const hasChanges = ref(false);
-
-function onFiltersChange(filters) {
-  selectedFilters.value = filters;
-  hasChanges.value = false; 
-}
+export default {
+  name: "FiltersList",
+  components: {
+    Accordion,
+  },
+  props: {
+    brands: Array,
+  },
+  data() {
+    return {
+      selectedFilters: {},
+    };
+  },
+  methods: {
+    onFiltersUpdate(filters) {
+      this.selectedFilters = filters;
+    },
+    filterCards() {
+      this.$emit('filter', this.selectedFilters);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

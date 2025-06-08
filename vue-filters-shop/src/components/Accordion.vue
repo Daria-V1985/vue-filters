@@ -12,7 +12,10 @@
       {{ item.title }}
     </div>
     <div v-show="isOpen(index)" class="filter-catalog__item-content content-item">
-      <component :is="item.component" v-bind="item.props" />
+      <component 
+        :is="item.component" 
+        v-bind="item.props"
+        @change="onFilterChange(item.title, $event)" />
     </div>
   </div>
 </template>
@@ -36,12 +39,13 @@ export default {
     ColorFilter,
     PriceFilter,
   },
-  setup() {
+  setup(_, { emit }) {
 
     const sizes = ref([]);
     const colors = ref([]);
     const brands = ref([]);
     const lengths = ref([]);
+    const openAccordion = ref([]);
 
     onMounted(async () => {
       try {
@@ -60,8 +64,6 @@ export default {
       }
     });
 
-    const openAccordion = ref([]);
-
     const filterItems = ref([
       { title: 'Brand', component: 'BrandFilter', props: { brands } },
       { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes } },
@@ -69,6 +71,16 @@ export default {
       { title: 'Color', component: 'ColorFilter', props: { colors } },
       { title: 'Price Range', component: 'PriceFilter', props: {} },
     ]);
+
+    const selectedFilters = ref({
+      brand: [],
+      size: [],
+      dressLength: [],
+      color: [],
+      priceRange: [0, 100],
+    });
+
+    console.log(selectedFilters);
 
     function toggle(index) {
       if (openAccordion.value.includes(index)) {
@@ -82,10 +94,33 @@ export default {
       return openAccordion.value.includes(index)
     }
 
+    function onFilterChange(filterTitle, values) {
+      const key = normalizeKey(filterTitle);
+      selectedFilters.value[key] = values;
+      emit('update:selectedFilters', selectedFilters.value);
+    }
+
+    function normalizeKey(title) {
+      switch(title) {
+        case 'Brand': return 'brand';
+        case 'Size (Inches)': return 'size';
+        case 'Dress Length': return 'dressLength';
+        case 'Color': return 'color';
+        case 'Price Range': return 'priceRange';
+        default: return title.toLowerCase();
+      }
+    }
+
     return {
       filterItems,
       toggle,
       isOpen,
+      onFilterChange,
+      selectedFilters,
+/*       brands, 
+      sizes, 
+      lengths, 
+      colors, */
     }
   },
 };
