@@ -5,7 +5,7 @@
       :key="brand.id"
       :name="brand.name"
       :value="brand" 
-      @change="onChange"
+      @change="onBrandChange"
     />
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
     };
   },
   methods: {
-    onChange({ value, checked }) {
+    onBrandChange({ value, checked }) {
       if (checked) {
         this.selectedBrands.push(value);
       } else {

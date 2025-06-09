@@ -1,7 +1,7 @@
 <template>
   <div class="catalog__filters filter-catalog">
     <div class="filter-catalog__items">
-      <Accordion @update:selectedFilters="onFiltersUpdate" />
+      <Accordion v-model:selectedFilters="selectedFilters" />
     </div>
     <button 
       class="filter-catalog__btn"
@@ -27,10 +27,7 @@ export default {
       selectedFilters: {},
     };
   },
-  methods: {
-    onFiltersUpdate(filters) {
-      this.selectedFilters = filters;
-    },
+  methods: {    
     filterCards() {
       this.$emit('filter', this.selectedFilters);
     },

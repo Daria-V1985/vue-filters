@@ -4,6 +4,7 @@
         :id="item" 
         class="checkbox__input" 
         type="checkbox" 
+        :value="length" 
         v-model="isChecked"
         @change="onChange"
       />
@@ -14,7 +15,9 @@
 <script>
 export default {
   props: {
+    length: String,
     item: String,
+    value: Object,
   },
   data() {
     return {

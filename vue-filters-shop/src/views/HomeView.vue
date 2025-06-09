@@ -12,7 +12,6 @@
       </div>
     </div>
   </section>
-  <router-view />
 </template>
 
 <script setup>
@@ -37,22 +36,24 @@ onMounted(async () => {
   }
 });
 
-function onFilter(selectedFilters) {
+function onFilter(filters) {
+  console.log('Фильтры получены:', filters);
+  console.log('Исходные товары:', items.value);
   filteredItems.value = items.value.filter(item => {
-    if (selectedFilters.brand && selectedFilters.brand.length > 0) {
-      if (!selectedFilters.brand.includes(item.brand)) return false;
+    if (filters.brand && filters.brand.length > 0) {
+      if (!filters.brand.includes(item.brand)) return false;
     }
-    if (selectedFilters.size && selectedFilters.size.length > 0) {
-      if (!selectedFilters.size.includes(item.size)) return false;
+    if (filters.size && filters.size.length > 0) {
+      if (!filters.size.includes(item.size)) return false;
     }
-    if (selectedFilters.length && selectedFilters.length.length > 0) {
-      if (!selectedFilters.length.includes(item.length)) return false;
+    if (filters.dressLength && filters.dressLength.length > 0) {
+      if (!filters.dressLength.includes(item.length)) return false;
     }
-    if (selectedFilters.color && selectedFilters.color.length > 0) {
-      if (!selectedFilters.color.includes(item.color)) return false;
+    if (filters.color && filters.color.length > 0) {
+      if (!filters.color.includes(item.color)) return false;
     }
-    if (selectedFilters.priceRange) {
-      const [minPrice, maxPrice] = selectedFilters.priceRange;
+    if (filters.priceRange) {
+      const [minPrice, maxPrice] = filters.priceRange;
       if (item.price < minPrice || item.price > maxPrice) return false;
     }
     return true;

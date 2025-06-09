@@ -39,7 +39,13 @@ export default {
     ColorFilter,
     PriceFilter,
   },
-  setup(_, { emit }) {
+  props: {
+    selectedFilters: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props, { emit }) {
 
     const sizes = ref([]);
     const colors = ref([]);
@@ -72,16 +78,6 @@ export default {
       { title: 'Price Range', component: 'PriceFilter', props: {} },
     ]);
 
-    const selectedFilters = ref({
-      brand: [],
-      size: [],
-      dressLength: [],
-      color: [],
-      priceRange: [0, 100],
-    });
-
-    console.log(selectedFilters);
-
     function toggle(index) {
       if (openAccordion.value.includes(index)) {
         openAccordion.value = openAccordion.value.filter(i => i !== index)
@@ -96,8 +92,8 @@ export default {
 
     function onFilterChange(filterTitle, values) {
       const key = normalizeKey(filterTitle);
-      selectedFilters.value[key] = values;
-      emit('update:selectedFilters', selectedFilters.value);
+      const updatedFilters = { ...props.selectedFilters, [key]: values };
+      emit('update:selectedFilters', updatedFilters);
     }
 
     function normalizeKey(title) {
@@ -116,11 +112,6 @@ export default {
       toggle,
       isOpen,
       onFilterChange,
-      selectedFilters,
-/*       brands, 
-      sizes, 
-      lengths, 
-      colors, */
     }
   },
 };
