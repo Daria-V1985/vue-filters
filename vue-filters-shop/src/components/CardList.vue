@@ -25,3 +25,17 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_variables.scss";
+
+.products {
+  &__card {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    column-gap: 20px;
+    row-gap: 35px;
+  }
+}
+</style>

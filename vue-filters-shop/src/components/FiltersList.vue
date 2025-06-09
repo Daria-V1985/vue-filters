@@ -1,20 +1,64 @@
 <template>
   <div class="catalog__filters filter-catalog">
     <div class="filter-catalog__items">
-      <BrandFilter />
-      <SizeFilter />
-      <LengthFilter />
-      <ColorFilter />
-      <PriceFilter />
+      <Accordion v-model:selectedFilters="selectedFilters" />
     </div>
-    <button class="filter-catalog__btn disabled">apply</button>
+    <button 
+      class="filter-catalog__btn"
+      @click="filterCards">
+      apply
+    </button>
   </div>
 </template>
 
-<script setup>
-import BrandFilter from "@/components/BrandFilter.vue";
-import ColorFilter from "@/components/ColorFilter.vue";
-import LengthFilter from "@/components/LengthFilter.vue";
-import PriceFilter from "@/components/PriceFilter.vue";
-import SizeFilter from "@/components/SizeFilter.vue";
+<script>
+import Accordion from "@/components/Accordion.vue";
+
+export default {
+  name: "FiltersList",
+  components: {
+    Accordion,
+  },
+  props: {
+    brands: Array,
+  },
+  data() {
+    return {
+      selectedFilters: {},
+    };
+  },
+  methods: {    
+    filterCards() {
+      this.$emit('filter', this.selectedFilters);
+    },
+  },
+};
 </script>
+
+<style lang="scss" scoped>
+@import "../assets/scss/_variables.scss";
+
+.filter-catalog {
+  min-width: 355px;
+  &__items {
+    font-family: $mainFont;
+    font-size: 14px;
+  }
+  &__btn {
+    text-transform: uppercase;
+    background: #F0F2F2;
+    color: #828282;
+    padding: 10px 30px;
+    outline: none;
+    border: 2px solid #828282;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-left: 65%;
+    cursor: pointer;
+  }
+}
+
+</style>
