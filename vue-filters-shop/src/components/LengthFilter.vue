@@ -5,12 +5,14 @@
       :key="length.id"
       :item="length.item"
       :value="length" 
-      @change="onChange"
+      :checked="modelValue.includes(length.id)"
+      @change="checked => onLengthChange({ id: length.id, checked })"
     />
   </div>
 </template>
 
 <script >
+import { onMounted } from "vue";
 import Length from "@/components/Length.vue";
 
 export default {
@@ -19,22 +21,48 @@ export default {
     Length,
   },
   props: {
-    lengths: Array,
+    lengths: {
+      type: Array,
+      required: true
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
   },
-    data() {
+  data() {
     return {
       selectedLengths: [],
     };
   },
   methods: {
-    onChange({ value, checked }) {
+    onLengthChange({ id, checked }) {
+      let updated = [...this.modelValue];
       if (checked) {
-        this.selectedLengths.push(value);
+        if (!updated.includes(id)) {
+          updated.push(id);
+        }
       } else {
-        this.selectedLengths = this.selectedLengths.filter(b => b !== value);
+        updated = updated.filter(lid => lid !== id);
       }
-      this.$emit('change', this.selectedLengths);
+      this.$emit('update:modelValue', updated);
+      console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));
     },
+  },
+  emits: ['update:modelValue'],
+  setup(props) {
+    onMounted(() => {
+      console.log('LengthFilter - Initial modelValue:', props.modelValue);
+    });
+
+    const updateValue = (value) => {
+      console.log('LengthFilter - Emitting update:modelValue', value);
+      this.$emit('update:modelValue', value); 
+    };
+
+    return {
+      updateValue
+    }
   },
 };
 </script>

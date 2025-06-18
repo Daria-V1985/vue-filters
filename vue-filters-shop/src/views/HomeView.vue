@@ -12,6 +12,7 @@
       </div>
     </div>
   </section>
+  <router-view />
 </template>
 
 <script setup>
@@ -37,11 +38,9 @@ onMounted(async () => {
 });
 
 function onFilter(filters) {
-  console.log('Фильтры получены:', filters);
-  console.log('Исходные товары:', items.value);
   filteredItems.value = items.value.filter(item => {
-    if (filters.brand && filters.brand.length > 0) {
-      if (!filters.brand.includes(item.brand)) return false;
+    if (filters.brands && filters.brands.length > 0) {
+      if (!filters.brands.includes(item.brand)) return false;
     }
     if (filters.size && filters.size.length > 0) {
       if (!filters.size.includes(item.size)) return false;
@@ -58,6 +57,8 @@ function onFilter(filters) {
     }
     return true;
   });
+  console.log('Фильтры получены:', JSON.parse(JSON.stringify(filters)));
+  console.log('Исходные товары:', items.value);
 }
 
 </script>

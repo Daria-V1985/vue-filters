@@ -5,12 +5,14 @@
       :key="brand.id"
       :name="brand.name"
       :value="brand" 
-      @change="onBrandChange"
+      :checked="modelValue.includes(brand.id)"
+      @change="checked => onBrandChange({ id: brand.id, checked })"
     />
   </div>
 </template>
 
 <script lang="js">
+import { onMounted } from "vue";
 import Brand from "@/components/Brand.vue";
 
 export default {
@@ -19,8 +21,14 @@ export default {
     Brand,
   },
   props: {
-    brands: Array,
-    value: Object,
+    brands: {
+      type: Array,
+      required: true
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -28,14 +36,33 @@ export default {
     };
   },
   methods: {
-    onBrandChange({ value, checked }) {
+    onBrandChange({ id, checked }) {
+      let updated = [...this.modelValue];
       if (checked) {
-        this.selectedBrands.push(value);
+        if (!updated.includes(id)) {
+          updated.push(id);
+        }
       } else {
-        this.selectedBrands = this.selectedBrands.filter(b => b !== value);
+        updated = updated.filter(bid => bid !== id);
       }
-      this.$emit('change', this.selectedBrands);
+      this.$emit('update:modelValue', updated);
+      console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));
     },
+  },
+  emits: ['update:modelValue'],
+  setup(props) {
+    onMounted(() => {
+      console.log('BrandFilter - Initial modelValue:', props.modelValue);
+    });
+
+    const updateValue = (value) => {
+      console.log('BrandFilter - Emitting update:modelValue', value);
+      this.$emit('update:modelValue', value); 
+    };
+
+    return {
+      updateValue
+    }
   },
 };
 </script>

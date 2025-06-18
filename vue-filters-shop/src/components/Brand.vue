@@ -3,8 +3,8 @@
       <input :id="value.name" 
         class="checkbox__input" 
         type="checkbox" 
-        :value="brand" 
-        v-model="isChecked"
+        :value="value" 
+        :checked="checked"
         @change="onChange"
       />
       <label :for="value.name" class="checkbox__label">{{ value.name }}</label>
@@ -14,18 +14,13 @@
 <script>
 export default {
   props: {
-    brand: String,
     name: String,
     value: Object,
-  },
-  data() {
-    return {
-      isChecked: false
-    };
+    checked: Boolean,
   },
   methods: {
-    onChange() {
-      this.$emit('change', { value: this.value, checked: this.isChecked });
+    onChange(event) {
+      this.$emit('change', { value: this.value, checked: event.target.checked });
     },
   },
 };

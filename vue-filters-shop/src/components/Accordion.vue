@@ -15,7 +15,8 @@
       <component 
         :is="item.component" 
         v-bind="item.props"
-        @change="onFilterChange(item.title, $event)" />
+        :model-value="item.props.modelValue"
+        @update:modelValue="values => onFilterChange(item.title, values)" />
     </div>
   </div>
 </template>
@@ -27,7 +28,7 @@ import LengthFilter from '@/components/LengthFilter.vue'
 import ColorFilter from '@/components/ColorFilter.vue'
 import PriceFilter from '@/components/PriceFilter.vue'
 
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import axios from "axios";
 
 export default {
@@ -53,6 +54,14 @@ export default {
     const lengths = ref([]);
     const openAccordion = ref([]);
 
+    const filterItems = computed(() => [
+      { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value, modelValue: props.selectedFilters?.brand || [], } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value, modelValue: props.selectedFilters.size || [], } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value, modelValue: props.selectedFilters.dressLength || [], } },
+      { title: 'Color', component: 'ColorFilter', props: { colors: colors.value, modelValue: props.selectedFilters.color || [], } },
+      { title: 'Price Range', component: 'PriceFilter', props: { modelValue: props.selectedFilters.priceRange || [], } },
+    ]);
+
     onMounted(async () => {
       try {
         const [brandsResponce, sizesResponce, colorsResponce, lengthsResponce] = await Promise.all([
@@ -69,14 +78,6 @@ export default {
         console.log(error);
       }
     });
-
-    const filterItems = ref([
-      { title: 'Brand', component: 'BrandFilter', props: { brands } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths } },
-      { title: 'Color', component: 'ColorFilter', props: { colors } },
-      { title: 'Price Range', component: 'PriceFilter', props: {} },
-    ]);
 
     function toggle(index) {
       if (openAccordion.value.includes(index)) {
@@ -95,6 +96,8 @@ export default {
       const updatedFilters = { ...props.selectedFilters, [key]: values };
       emit('update:selectedFilters', updatedFilters);
     }
+
+    
 
     function normalizeKey(title) {
       switch(title) {
