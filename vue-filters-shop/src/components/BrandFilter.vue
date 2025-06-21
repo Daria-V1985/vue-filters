@@ -11,8 +11,7 @@
   </div>
 </template>
 
-<script lang="js">
-import { onMounted } from "vue";
+<script>
 import Brand from "@/components/Brand.vue";
 
 export default {
@@ -30,11 +29,6 @@ export default {
       default: () => [],
     },
   },
-  data() {
-    return {
-      selectedBrands: [],
-    };
-  },
   methods: {
     onBrandChange({ id, checked }) {
       let updated = [...this.modelValue];
@@ -50,20 +44,9 @@ export default {
     },
   },
   emits: ['update:modelValue'],
-  setup(props) {
-    onMounted(() => {
-      console.log('BrandFilter - Initial modelValue:', props.modelValue);
-    });
-
-    const updateValue = (value) => {
-      console.log('BrandFilter - Emitting update:modelValue', value);
-      this.$emit('update:modelValue', value); 
-    };
-
-    return {
-      updateValue
-    }
-  },
+  mounted() {
+    console.log('BrandFilter - Initial modelValue:', this.modelValue);
+  }
 };
 </script>
 

@@ -62,6 +62,8 @@ export default {
       { title: 'Price Range', component: 'PriceFilter', props: { modelValue: props.selectedFilters.priceRange || [], } },
     ]);
 
+    console.log('selectedFilters.color:', JSON.parse(JSON.stringify(props.selectedFilters.color)));
+
     onMounted(async () => {
       try {
         const [brandsResponce, sizesResponce, colorsResponce, lengthsResponce] = await Promise.all([
@@ -94,16 +96,15 @@ export default {
     function onFilterChange(filterTitle, values) {
       const key = normalizeKey(filterTitle);
       const updatedFilters = { ...props.selectedFilters, [key]: values };
+      console.log('Updated filters:', updatedFilters);
       emit('update:selectedFilters', updatedFilters);
     }
-
-    
 
     function normalizeKey(title) {
       switch(title) {
         case 'Brand': return 'brand';
         case 'Size (Inches)': return 'size';
-        case 'Dress Length': return 'dressLength';
+        case 'Dress Length': return 'length';
         case 'Color': return 'color';
         case 'Price Range': return 'priceRange';
         default: return title.toLowerCase();

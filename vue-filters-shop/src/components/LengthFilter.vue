@@ -12,7 +12,6 @@
 </template>
 
 <script >
-import { onMounted } from "vue";
 import Length from "@/components/Length.vue";
 
 export default {
@@ -50,20 +49,9 @@ export default {
     },
   },
   emits: ['update:modelValue'],
-  setup(props) {
-    onMounted(() => {
-      console.log('LengthFilter - Initial modelValue:', props.modelValue);
-    });
-
-    const updateValue = (value) => {
-      console.log('LengthFilter - Emitting update:modelValue', value);
-      this.$emit('update:modelValue', value); 
-    };
-
-    return {
-      updateValue
-    }
-  },
+  mounted() {
+    console.log('LengthFilter - Initial modelValue:', this.modelValue);
+  }
 };
 </script>
 

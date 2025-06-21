@@ -26,15 +26,16 @@ export default {
     return {
       selectedFilters: {
         brand: [],
-        dressLength: [],
+        size: [],
+        length: [],
+        color: [],
+        priceRange: [0, 100],
       },
     };
   },
   methods: { 
-    updateSelectedFilters(newFilters) {
-      this.selectedFilters = newFilters;
-    },   
     filterCards() {
+      console.log('Нажата кнопка Apply');
       this.$emit('filter', this.selectedFilters);
     },
   },

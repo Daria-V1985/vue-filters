@@ -6,15 +6,32 @@
 export default {
   props: {
     name: String,
+    value: String,        
+    modelValue: {
+      type: Array,
+      required: true, 
+    },
   },
-    data() {
-    return {
-      isActive: false,
-    };
+  computed: {
+    isActive() {
+      return this.modelValue.includes(this.value); 
+    },
   },
   methods: {
     toggleActive() {
-      this.isActive = !this.isActive;
+      if (this.value === undefined || this.value === null) {
+        console.warn('Color component toggleActive called with undefined/null value');
+        return;
+      }
+      let newValue = [...this.modelValue];
+      console.log('Before toggle:', newValue);
+      if (this.isActive) {
+        newValue = newValue.filter(size => size !== this.value); 
+      } else {
+        newValue.push(this.value); 
+      }
+      console.log('After toggle:', newValue);
+      this.$emit('update:modelValue', newValue); 
     },
   },
 };

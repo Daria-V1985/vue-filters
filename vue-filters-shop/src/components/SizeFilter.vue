@@ -5,7 +5,8 @@
         v-for="size in sizes"
         :key="size.id"
         :name="size.name"
-        @change="onChange"
+        :value="size.name"
+        v-model="selectedSizes"
       />
     </div>
   </div>
@@ -20,22 +21,30 @@ export default {
     Size,
   },
   props: {
-    sizes: Array,
+    sizes: {
+      type: Array,
+      required: true, 
+    },
+    modelValue: {
+      type: Array,
+      default: () => [], 
+    },
   },
-    data() {
+  data() {
     return {
-      selectedSizes: [],
+      selectedSizes: this.modelValue ? this.modelValue.slice() : [],
     };
   },
-  methods: {
-    onChange(event) {
-      const sizeName = event.target.value;
-      if (event.target.checked) {
-        this.selectedSizes.push(sizeName);
-      } else {
-        this.selectedSizes = this.selectedSizes.filter(b => b !== sizeName);
+  watch: {
+    selectedSizes(newSizes) {
+      if (JSON.stringify(newSizes) !== JSON.stringify(this.modelValue)) {
+        this.$emit('update:modelValue', newSizes);
       }
-      this.$emit('change', this.selectedSizes);
+    },
+    modelValue(newSizes) {
+      if (JSON.stringify(newSizes) !== JSON.stringify(this.selectedSizes)) {
+        this.selectedSizes = newSizes.slice();
+      }
     },
   },
 };
