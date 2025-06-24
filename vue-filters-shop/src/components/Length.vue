@@ -1,21 +1,21 @@
 <template>
     <div class="content-item__checkbox checkbox">
       <input 
-        :id="value.item" 
+        :id="value.name" 
         class="checkbox__input" 
         type="checkbox" 
         :value="value" 
         :checked="checked"
         @change="onChange"
       />
-      <label :for="value.item" class="checkbox__label">{{ value.item }}</label>
+      <label :for="value.name" class="checkbox__label">{{ value.name }}</label>
     </div>
 </template>
 
 <script>
 export default {
   props: {
-    item: String,
+    name: String,
     value: Object,
     checked: Boolean,
   },

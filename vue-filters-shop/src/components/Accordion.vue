@@ -57,7 +57,7 @@ export default {
     const filterItems = computed(() => [
       { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value, modelValue: props.selectedFilters?.brand || [], } },
       { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value, modelValue: props.selectedFilters.size || [], } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value, modelValue: props.selectedFilters.dressLength || [], } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value, modelValue: props.selectedFilters.length || [], } },
       { title: 'Color', component: 'ColorFilter', props: { colors: colors.value, modelValue: props.selectedFilters.color || [], } },
       { title: 'Price Range', component: 'PriceFilter', props: { modelValue: props.selectedFilters.priceRange || [], } },
     ]);

@@ -3,10 +3,10 @@
     <Length  
       v-for="length in lengths"
       :key="length.id"
-      :item="length.item"
+      :item="length.name"
       :value="length" 
-      :checked="modelValue.includes(length.id)"
-      @change="checked => onLengthChange({ id: length.id, checked })"
+      :checked="modelValue.includes(length.name)"
+      @change="checked => onLengthChange({ name: length.name, checked })"
     />
   </div>
 </template>
@@ -29,20 +29,15 @@ export default {
       default: () => [],
     },
   },
-  data() {
-    return {
-      selectedLengths: [],
-    };
-  },
   methods: {
-    onLengthChange({ id, checked }) {
+    onLengthChange({ name, checked }) {
       let updated = [...this.modelValue];
       if (checked) {
-        if (!updated.includes(id)) {
-          updated.push(id);
+        if (!updated.includes(name)) {
+          updated.push(name);
         }
       } else {
-        updated = updated.filter(lid => lid !== id);
+        updated = updated.filter(lname => lname !== name);
       }
       this.$emit('update:modelValue', updated);
       console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));

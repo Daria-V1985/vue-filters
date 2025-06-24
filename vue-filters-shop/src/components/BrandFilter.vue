@@ -5,8 +5,8 @@
       :key="brand.id"
       :name="brand.name"
       :value="brand" 
-      :checked="modelValue.includes(brand.id)"
-      @change="checked => onBrandChange({ id: brand.id, checked })"
+      :checked="modelValue.includes(brand.name)"
+      @change="checked => onBrandChange({ name: brand.name, checked })"
     />
   </div>
 </template>
@@ -30,14 +30,14 @@ export default {
     },
   },
   methods: {
-    onBrandChange({ id, checked }) {
+    onBrandChange({ name, checked }) {
       let updated = [...this.modelValue];
       if (checked) {
-        if (!updated.includes(id)) {
-          updated.push(id);
+        if (!updated.includes(name)) {
+          updated.push(name);
         }
       } else {
-        updated = updated.filter(bid => bid !== id);
+        updated = updated.filter(bname => bname !== name);
       }
       this.$emit('update:modelValue', updated);
       console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));
@@ -45,7 +45,7 @@ export default {
   },
   emits: ['update:modelValue'],
   mounted() {
-    console.log('BrandFilter - Initial modelValue:', this.modelValue);
+    console.log('BrandFilter - Initial modelValue (names):', this.modelValue);
   }
 };
 </script>
