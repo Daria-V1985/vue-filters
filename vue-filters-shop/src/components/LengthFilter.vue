@@ -5,8 +5,7 @@
       :key="length.id"
       :item="length.name"
       :value="length" 
-      :checked="modelValue.includes(length.name)"
-      @change="checked => onLengthChange({ name: length.name, checked })"
+      v-model="selectedLengthsMap[length.name]"
     />
   </div>
 </template>
@@ -29,21 +28,37 @@ export default {
       default: () => [],
     },
   },
-  methods: {
-    onLengthChange({ name, checked }) {
-      let updated = [...this.modelValue];
-      if (checked) {
-        if (!updated.includes(name)) {
-          updated.push(name);
-        }
-      } else {
-        updated = updated.filter(lname => lname !== name);
-      }
-      this.$emit('update:modelValue', updated);
-      console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));
-    },
-  },
   emits: ['update:modelValue'],
+  data() {
+    return {
+      selectedLengthsMap: {},
+      internalUpdate: false,
+    };
+  },
+    watch: {
+    modelValue: {
+      immediate: true,
+      handler(newVal) {
+        if (this.internalUpdate) {
+          this.internalUpdate = false;
+          return;
+        }
+        const map = {};
+        this.lengths.forEach(length => {
+          map[length.name] = newVal.includes(length.name);
+        });
+        this.selectedLengthsMap = map;
+      }
+    },
+    selectedLengthsMap: {
+      deep: true,
+      handler(newArr) {
+        this.internalUpdate = true;
+        const selected = Object.keys(newArr).filter(name => newArr[name]);
+        this.$emit('update:modelValue', selected);
+      }
+    }
+  },
   mounted() {
     console.log('LengthFilter - Initial modelValue:', this.modelValue);
   }

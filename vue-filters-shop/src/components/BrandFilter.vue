@@ -5,8 +5,7 @@
       :key="brand.id"
       :name="brand.name"
       :value="brand" 
-      :checked="modelValue.includes(brand.name)"
-      @change="checked => onBrandChange({ name: brand.name, checked })"
+      v-model="selectedBrandsMap[brand.name]"
     />
   </div>
 </template>
@@ -29,21 +28,37 @@ export default {
       default: () => [],
     },
   },
-  methods: {
-    onBrandChange({ name, checked }) {
-      let updated = [...this.modelValue];
-      if (checked) {
-        if (!updated.includes(name)) {
-          updated.push(name);
-        }
-      } else {
-        updated = updated.filter(bname => bname !== name);
-      }
-      this.$emit('update:modelValue', updated);
-      console.log('ID фильтров получены:', JSON.parse(JSON.stringify(updated)));
-    },
-  },
   emits: ['update:modelValue'],
+  data() {
+    return {
+      selectedBrandsMap: {},
+      internalUpdate: false,
+    };
+  },
+  watch: {
+    modelValue: {
+      immediate: true,
+      handler(newVal) {
+        if (this.internalUpdate) {
+          this.internalUpdate = false;
+          return;
+        }
+        const map = {};
+        this.brands.forEach(brand => {
+          map[brand.name] = newVal.includes(brand.name);
+        });
+        this.selectedBrandsMap = map;
+      }
+    },
+    selectedBrandsMap: {
+      deep: true,
+      handler(newArr) {
+        this.internalUpdate = true;
+        const selected = Object.keys(newArr).filter(name => newArr[name]);
+        this.$emit('update:modelValue', selected);
+      }
+    }
+  },
   mounted() {
     console.log('BrandFilter - Initial modelValue (names):', this.modelValue);
   }

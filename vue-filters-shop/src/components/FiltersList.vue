@@ -1,7 +1,7 @@
 <template>
   <div class="catalog__filters filter-catalog">
     <div class="filter-catalog__items">
-      <Accordion :selectedFilters="selectedFilters" v-model:selectedFilters="selectedFilters" />
+      <Accordion v-model:selectedFilters="filters" />
     </div>
     <button 
       class="filter-catalog__btn"
@@ -13,6 +13,7 @@
 
 <script>
 import Accordion from "@/components/Accordion.vue";
+import { ref, watch } from "vue";
 
 export default {
   name: "FiltersList",
@@ -22,28 +23,30 @@ export default {
   props: {
     brands: Array,
   },
-  data() {
+  emits: ['filter'],
+  setup(props, { emit }) {
+    const filters = ref({
+      brand: [],
+      size: [],
+      length: [],
+      color: [],
+      priceRange: [0, 100],
+    });
+
+    watch(filters, (newVal) => {
+      console.log('selectedFilters changed:', JSON.parse(JSON.stringify(newVal)));
+    }, { deep: true });
+
+    function filterCards() {
+      console.log('Нажата кнопка Apply');
+      emit('filter', filters.value);
+    }
+
     return {
-      selectedFilters: {
-        brand: [],
-        size: [],
-        length: [],
-        color: [],
-        priceRange: [0, 100],
-      },
+      filters,
+      filterCards,
     };
   },
-  methods: { 
-    filterCards() {
-      console.log('Нажата кнопка Apply');
-      this.$emit('filter', this.selectedFilters);
-    },
-  },
-  watch: {
-  selectedFilters(newVal) {
-    console.log('selectedFilters changed:', JSON.parse(JSON.stringify(newVal)));
-  }
-}
 };
 </script>
 

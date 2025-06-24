@@ -15,8 +15,8 @@
       <component 
         :is="item.component" 
         v-bind="item.props"
-        :model-value="item.props.modelValue"
-        @update:modelValue="values => onFilterChange(item.title, values)" />
+        :model-value="selectedFilters[normalize(item.title)]"
+        @update:modelValue="value => updateFilter(normalize(item.title), value)" />
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@ export default {
       required: true
     }
   },
+  emits: ['update:selectedFilters'],
   setup(props, { emit }) {
 
     const sizes = ref([]);
@@ -55,14 +56,12 @@ export default {
     const openAccordion = ref([]);
 
     const filterItems = computed(() => [
-      { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value, modelValue: props.selectedFilters?.brand || [], } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value, modelValue: props.selectedFilters.size || [], } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value, modelValue: props.selectedFilters.length || [], } },
-      { title: 'Color', component: 'ColorFilter', props: { colors: colors.value, modelValue: props.selectedFilters.color || [], } },
-      { title: 'Price Range', component: 'PriceFilter', props: { modelValue: props.selectedFilters.priceRange || [], } },
+      { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value } },
+      { title: 'Color', component: 'ColorFilter', props: { colors: colors.value } },
+      { title: 'Price Range', component: 'PriceFilter', props: { } },
     ]);
-
-    console.log('selectedFilters.color:', JSON.parse(JSON.stringify(props.selectedFilters.color)));
 
     onMounted(async () => {
       try {
@@ -93,14 +92,7 @@ export default {
       return openAccordion.value.includes(index)
     }
 
-    function onFilterChange(filterTitle, values) {
-      const key = normalizeKey(filterTitle);
-      const updatedFilters = { ...props.selectedFilters, [key]: values };
-      console.log('Updated filters:', updatedFilters);
-      emit('update:selectedFilters', updatedFilters);
-    }
-
-    function normalizeKey(title) {
+    function normalize(title) {
       switch(title) {
         case 'Brand': return 'brand';
         case 'Size (Inches)': return 'size';
@@ -111,11 +103,19 @@ export default {
       }
     }
 
+    function updateFilter(key, newVal) {
+      const updatedFilters = { ...props.selectedFilters, [key]: newVal }
+      emit('update:selectedFilters', updatedFilters)
+    }
+
+
     return {
       filterItems,
       toggle,
       isOpen,
-      onFilterChange,
+      normalize,
+      selectedFilter: props.selectedFilters,
+      updateFilter
     }
   },
 };

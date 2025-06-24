@@ -17,11 +17,12 @@ export default {
   props: {
     name: String,
     value: Object,
-    checked: Boolean,
+    modelValue: Boolean,
   },
+  emits: ['update:modelValue'],
   methods: {
     onChange(event) {
-      this.$emit('change', { value: this.value, checked: event.target.checked });
+      this.$emit( 'update:modelValue', event.target.checked );
     },
   },
 };
