@@ -22,17 +22,14 @@ export default {
   methods: {
     toggleActive() {
       if (this.value === undefined || this.value === null) {
-        console.warn('Color component toggleActive called with undefined/null value');
         return;
       }
       let newValue = [...this.modelValue];
-      console.log('Before toggle:', newValue);
       if (this.isActive) {
         newValue = newValue.filter(color => color !== this.value); 
       } else {
         newValue.push(this.value); 
       }
-      console.log('After toggle:', newValue);
       this.$emit('update:modelValue', newValue); 
     },
   },

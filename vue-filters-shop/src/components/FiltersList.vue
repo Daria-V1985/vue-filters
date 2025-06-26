@@ -13,7 +13,7 @@
 
 <script>
 import Accordion from "@/components/Accordion.vue";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 export default {
   name: "FiltersList",
@@ -33,12 +33,7 @@ export default {
       priceRange: [0, 100],
     });
 
-    watch(filters, (newVal) => {
-      console.log('selectedFilters changed:', JSON.parse(JSON.stringify(newVal)));
-    }, { deep: true });
-
     function filterCards() {
-      console.log('Нажата кнопка Apply');
       emit('filter', filters.value);
     }
 

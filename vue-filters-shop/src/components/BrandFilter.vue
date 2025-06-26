@@ -59,9 +59,6 @@ export default {
       }
     }
   },
-  mounted() {
-    console.log('BrandFilter - Initial modelValue (names):', this.modelValue);
-  }
 };
 </script>
 

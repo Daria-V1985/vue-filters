@@ -59,9 +59,6 @@ export default {
       }
     }
   },
-  mounted() {
-    console.log('LengthFilter - Initial modelValue:', this.modelValue);
-  }
 };
 </script>
 
