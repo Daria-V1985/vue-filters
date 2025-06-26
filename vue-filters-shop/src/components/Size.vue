@@ -6,15 +6,29 @@
 export default {
   props: {
     name: String,
+    value: String,        
+    modelValue: {
+      type: Array,
+      required: true, 
+    },
   },
-    data() {
-    return {
-      isActive: false,
-    };
+  computed: {
+    isActive() {
+      return this.modelValue.includes(this.value); 
+    },
   },
   methods: {
     toggleActive() {
-      this.isActive = !this.isActive;
+      if (this.value === undefined || this.value === null) {
+        return;
+      }
+      let newValue = [...this.modelValue];
+      if (this.isActive) {
+        newValue = newValue.filter(size => size !== this.value); 
+      } else {
+        newValue.push(this.value); 
+      }
+      this.$emit('update:modelValue', newValue); 
     },
   },
 };

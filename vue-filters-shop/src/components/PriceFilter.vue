@@ -18,9 +18,23 @@ export default {
   components: { 
     Slider 
   },
-  data: () => ({
-    value: [10, 90]
-  }),
+  props: {
+    modelValue: {
+      type: Array,
+      default: () => [0, 100]
+    }
+  },
+  emits: ['update:modelValue'],
+  computed: {
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit('update:modelValue', val);
+      }
+    }
+  }
 };
 </script>
 

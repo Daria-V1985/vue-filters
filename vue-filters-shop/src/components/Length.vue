@@ -1,32 +1,28 @@
 <template>
     <div class="content-item__checkbox checkbox">
       <input 
-        :id="item" 
+        :id="value.name" 
         class="checkbox__input" 
         type="checkbox" 
-        :value="length" 
-        v-model="isChecked"
+        :value="value" 
+        :checked="checked"
         @change="onChange"
       />
-      <label :for="item" class="checkbox__label">{{ item }}</label>
+      <label :for="value.name" class="checkbox__label">{{ value.name }}</label>
     </div>
 </template>
 
 <script>
 export default {
   props: {
-    length: String,
-    item: String,
+    name: String,
     value: Object,
+    modelValue: Boolean,
   },
-  data() {
-    return {
-      isChecked: false
-    };
-  },
+  emits: ['update:modelValue'],
   methods: {
-    onChange() {
-      this.$emit('change', { value: this.name, checked: this.isChecked });
+    onChange(event) {
+      this.$emit( 'update:modelValue', event.target.checked );
     },
   },
 };

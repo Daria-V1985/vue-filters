@@ -5,12 +5,12 @@
       :key="brand.id"
       :name="brand.name"
       :value="brand" 
-      @change="onBrandChange"
+      v-model="selectedBrandsMap[brand.name]"
     />
   </div>
 </template>
 
-<script lang="js">
+<script>
 import Brand from "@/components/Brand.vue";
 
 export default {
@@ -19,23 +19,45 @@ export default {
     Brand,
   },
   props: {
-    brands: Array,
-    value: Object,
+    brands: {
+      type: Array,
+      required: true
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
   },
+  emits: ['update:modelValue'],
   data() {
     return {
-      selectedBrands: [],
+      selectedBrandsMap: {},
+      internalUpdate: false,
     };
   },
-  methods: {
-    onBrandChange({ value, checked }) {
-      if (checked) {
-        this.selectedBrands.push(value);
-      } else {
-        this.selectedBrands = this.selectedBrands.filter(b => b !== value);
+  watch: {
+    modelValue: {
+      immediate: true,
+      handler(newVal) {
+        if (this.internalUpdate) {
+          this.internalUpdate = false;
+          return;
+        }
+        const map = {};
+        this.brands.forEach(brand => {
+          map[brand.name] = newVal.includes(brand.name);
+        });
+        this.selectedBrandsMap = map;
       }
-      this.$emit('change', this.selectedBrands);
     },
+    selectedBrandsMap: {
+      deep: true,
+      handler(newArr) {
+        this.internalUpdate = true;
+        const selected = Object.keys(newArr).filter(name => newArr[name]);
+        this.$emit('update:modelValue', selected);
+      }
+    }
   },
 };
 </script>

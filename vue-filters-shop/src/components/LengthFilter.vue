@@ -3,9 +3,9 @@
     <Length  
       v-for="length in lengths"
       :key="length.id"
-      :item="length.item"
+      :item="length.name"
       :value="length" 
-      @change="onChange"
+      v-model="selectedLengthsMap[length.name]"
     />
   </div>
 </template>
@@ -19,22 +19,45 @@ export default {
     Length,
   },
   props: {
-    lengths: Array,
+    lengths: {
+      type: Array,
+      required: true
+    },
+    modelValue: {
+      type: Array,
+      default: () => [],
+    },
   },
-    data() {
+  emits: ['update:modelValue'],
+  data() {
     return {
-      selectedLengths: [],
+      selectedLengthsMap: {},
+      internalUpdate: false,
     };
   },
-  methods: {
-    onChange({ value, checked }) {
-      if (checked) {
-        this.selectedLengths.push(value);
-      } else {
-        this.selectedLengths = this.selectedLengths.filter(b => b !== value);
+    watch: {
+    modelValue: {
+      immediate: true,
+      handler(newVal) {
+        if (this.internalUpdate) {
+          this.internalUpdate = false;
+          return;
+        }
+        const map = {};
+        this.lengths.forEach(length => {
+          map[length.name] = newVal.includes(length.name);
+        });
+        this.selectedLengthsMap = map;
       }
-      this.$emit('change', this.selectedLengths);
     },
+    selectedLengthsMap: {
+      deep: true,
+      handler(newArr) {
+        this.internalUpdate = true;
+        const selected = Object.keys(newArr).filter(name => newArr[name]);
+        this.$emit('update:modelValue', selected);
+      }
+    }
   },
 };
 </script>

@@ -15,7 +15,8 @@
       <component 
         :is="item.component" 
         v-bind="item.props"
-        @change="onFilterChange(item.title, $event)" />
+        :model-value="selectedFilters[normalize(item.title)]"
+        @update:modelValue="value => updateFilter(normalize(item.title), value)" />
     </div>
   </div>
 </template>
@@ -27,7 +28,7 @@ import LengthFilter from '@/components/LengthFilter.vue'
 import ColorFilter from '@/components/ColorFilter.vue'
 import PriceFilter from '@/components/PriceFilter.vue'
 
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import axios from "axios";
 
 export default {
@@ -45,6 +46,7 @@ export default {
       required: true
     }
   },
+  emits: ['update:selectedFilters'],
   setup(props, { emit }) {
 
     const sizes = ref([]);
@@ -52,6 +54,14 @@ export default {
     const brands = ref([]);
     const lengths = ref([]);
     const openAccordion = ref([]);
+
+    const filterItems = computed(() => [
+      { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value } },
+      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value } },
+      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value } },
+      { title: 'Color', component: 'ColorFilter', props: { colors: colors.value } },
+      { title: 'Price Range', component: 'PriceFilter', props: { } },
+    ]);
 
     onMounted(async () => {
       try {
@@ -70,14 +80,6 @@ export default {
       }
     });
 
-    const filterItems = ref([
-      { title: 'Brand', component: 'BrandFilter', props: { brands } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths } },
-      { title: 'Color', component: 'ColorFilter', props: { colors } },
-      { title: 'Price Range', component: 'PriceFilter', props: {} },
-    ]);
-
     function toggle(index) {
       if (openAccordion.value.includes(index)) {
         openAccordion.value = openAccordion.value.filter(i => i !== index)
@@ -90,28 +92,30 @@ export default {
       return openAccordion.value.includes(index)
     }
 
-    function onFilterChange(filterTitle, values) {
-      const key = normalizeKey(filterTitle);
-      const updatedFilters = { ...props.selectedFilters, [key]: values };
-      emit('update:selectedFilters', updatedFilters);
-    }
-
-    function normalizeKey(title) {
+    function normalize(title) {
       switch(title) {
         case 'Brand': return 'brand';
         case 'Size (Inches)': return 'size';
-        case 'Dress Length': return 'dressLength';
+        case 'Dress Length': return 'length';
         case 'Color': return 'color';
         case 'Price Range': return 'priceRange';
         default: return title.toLowerCase();
       }
     }
 
+    function updateFilter(key, newVal) {
+      const updatedFilters = { ...props.selectedFilters, [key]: newVal }
+      emit('update:selectedFilters', updatedFilters)
+    }
+
+
     return {
       filterItems,
       toggle,
       isOpen,
-      onFilterChange,
+      normalize,
+      selectedFilter: props.selectedFilters,
+      updateFilter
     }
   },
 };

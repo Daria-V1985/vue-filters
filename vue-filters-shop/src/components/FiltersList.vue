@@ -1,7 +1,7 @@
 <template>
   <div class="catalog__filters filter-catalog">
     <div class="filter-catalog__items">
-      <Accordion v-model:selectedFilters="selectedFilters" />
+      <Accordion v-model:selectedFilters="filters" />
     </div>
     <button 
       class="filter-catalog__btn"
@@ -13,6 +13,7 @@
 
 <script>
 import Accordion from "@/components/Accordion.vue";
+import { ref } from "vue";
 
 export default {
   name: "FiltersList",
@@ -22,15 +23,24 @@ export default {
   props: {
     brands: Array,
   },
-  data() {
+  emits: ['filter'],
+  setup(props, { emit }) {
+    const filters = ref({
+      brand: [],
+      size: [],
+      length: [],
+      color: [],
+      priceRange: [0, 100],
+    });
+
+    function filterCards() {
+      emit('filter', filters.value);
+    }
+
     return {
-      selectedFilters: {},
+      filters,
+      filterCards,
     };
-  },
-  methods: {    
-    filterCards() {
-      this.$emit('filter', this.selectedFilters);
-    },
   },
 };
 </script>

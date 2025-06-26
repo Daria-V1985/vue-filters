@@ -5,7 +5,7 @@
         v-for="color in colors"
         :key="color.id"
         :background="color.background"
-        :value="color.name"
+        :value="color.background"
         v-model="selectedColors"
       />
     </div>
@@ -21,16 +21,23 @@ export default {
     Color,
   },
   props: {
-    colors: Array,
+    colors: {
+      type: Array,
+      required: true, 
+    },
+    modelValue: {
+      type: Array,
+      default: () => [], 
+    },
   },
   data() {
     return {
-      selectedColors: [],
+      selectedColors: this.modelValue ? this.modelValue.slice() : [],
     };
   },
   watch: {
     selectedColors(newColors) {
-      this.$emit('change', newColors);
+      this.$emit('update:modelValue', newColors); 
     }
   },
 };
@@ -38,7 +45,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/_variables.scss";
-
 
 .content-item {
   &__container {

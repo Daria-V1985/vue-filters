@@ -9,34 +9,28 @@ export default {
   props: {
     background: String,
     value: String,        
-    modelValue: Array,
-  },
-  data() {
-    return {
-      isActive: false,
-    };
+    modelValue: {
+      type: Array,
+      required: true, 
+    },
   },
   computed: {
-    isActiveData: {
-      get() {
-        return this.modelValue.includes(this.value);
-      },
-      set(val) {
-        let newValue = [...this.modelValue];
-        if (val) {
-          if (!newValue.includes(this.value)) {
-            newValue.push(this.value);
-          }
-        } else {
-          newValue = newValue.filter(c => c !== this.value);
-        }
-        this.$emit('update:modelValue', newValue);
-      }
+    isActive() {
+      return this.modelValue.includes(this.value); 
     },
   },
   methods: {
     toggleActive() {
-      this.isActive = !this.isActive;
+      if (this.value === undefined || this.value === null) {
+        return;
+      }
+      let newValue = [...this.modelValue];
+      if (this.isActive) {
+        newValue = newValue.filter(color => color !== this.value); 
+      } else {
+        newValue.push(this.value); 
+      }
+      this.$emit('update:modelValue', newValue); 
     },
   },
 };
