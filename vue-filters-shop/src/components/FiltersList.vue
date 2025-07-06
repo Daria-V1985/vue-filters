@@ -11,11 +11,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Accordion from "@/components/Accordion.vue";
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
 
-export default {
+export default defineComponent({
   name: "FiltersList",
   components: {
     Accordion,
@@ -42,7 +42,7 @@ export default {
       filterCards,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -16,16 +16,33 @@
   </article>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   props: {
-    imageUrl: String,
-    category: String,
-    title: String,
-    price: Number,
-    color: String,
+    imageUrl: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

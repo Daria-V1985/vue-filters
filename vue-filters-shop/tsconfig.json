@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "esnext",   // Указывает целевую версию JS для компиляции
+    "module": "esnext",   // Указывает тип модуля, который будет использоваться в скомпилированном коде
+    "strict": true,       // Включает строгий режим компиляции улучшающий качество кода (например, строгая типизация)
+    "jsx": "preserve",    // Управляет тем, как конструкты JSX отображаются в файлах JavaScript
+    "moduleResolution": "node",  // Указывает версию Node.JS для работы с проектом
+    "allowJs": true,           // Разрешает импортировать файлы JavaScript внутри проекта
+    "skipLibCheck": true,      // Пропуск проверки типов в библиотеках
+    "esModuleInterop": true,   // Улучшенная совместимость модулей ES
+    "allowSyntheticDefaultImports": true,  // Позволяет написать импорт как, например: import React from "react";
+    "forceConsistentCasingInFileNames": true,  // Настройка чувствительности Typescript к регистру файловой системы
+    "useDefineForClassFields": true, // Отвечает за то, как классы будут компилироваться в код
+    "sourceMap": true,  // Позволяет создавать файлы sourcemap
+    "baseUrl": ".",  // Устанавливает базовый каталог
+    "types": [
+      "webpack-env"
+    ],
+    "paths": {  // записи, которые переназначают импорты относительно baseUrl, если установлено, или файла tsconfig
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [      // Дополнительные библиотеки
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  },
+  "include": [    // Включение файлов для компиляции
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [    // Исключение файлов из компиляции 
+    "node_modules"
+  ]
+}

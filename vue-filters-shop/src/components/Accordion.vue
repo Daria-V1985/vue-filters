@@ -21,17 +21,17 @@
   </div>
 </template>
 
-<script>
+<script  lang="ts">
 import BrandFilter from '@/components/BrandFilter.vue'
 import SizeFilter from '@/components/SizeFilter.vue'
 import LengthFilter from '@/components/LengthFilter.vue'
 import ColorFilter from '@/components/ColorFilter.vue'
 import PriceFilter from '@/components/PriceFilter.vue'
 
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, defineComponent } from "vue";
 import axios from "axios";
 
-export default {
+export default defineComponent({
   name: "Accordion",
   components: {
     BrandFilter,
@@ -44,16 +44,16 @@ export default {
     selectedFilters: {
       type: Object,
       required: true
-    }
+    },
   },
   emits: ['update:selectedFilters'],
   setup(props, { emit }) {
 
-    const sizes = ref([]);
-    const colors = ref([]);
-    const brands = ref([]);
-    const lengths = ref([]);
-    const openAccordion = ref([]);
+    const sizes = ref<string[]>([]);
+    const colors = ref<string[]>([]);
+    const brands = ref<string[]>([]);
+    const lengths = ref<string[]>([]);
+    const openAccordion = ref<number[]>([]);
 
     const filterItems = computed(() => [
       { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value } },
@@ -80,7 +80,7 @@ export default {
       }
     });
 
-    function toggle(index) {
+    function toggle(index: number) {
       if (openAccordion.value.includes(index)) {
         openAccordion.value = openAccordion.value.filter(i => i !== index)
       } else {
@@ -88,11 +88,11 @@ export default {
       }
     }
 
-    function isOpen(index) {
+    function isOpen(index:number) {
       return openAccordion.value.includes(index)
     }
 
-    function normalize(title) {
+    function normalize(title: string) {
       switch(title) {
         case 'Brand': return 'brand';
         case 'Size (Inches)': return 'size';
@@ -103,11 +103,10 @@ export default {
       }
     }
 
-    function updateFilter(key, newVal) {
-      const updatedFilters = { ...props.selectedFilters, [key]: newVal }
+    function updateFilter(key: string, value: any) {
+      const updatedFilters = { ...props.selectedFilters, [key]: value }
       emit('update:selectedFilters', updatedFilters)
     }
-
 
     return {
       filterItems,
@@ -118,7 +117,7 @@ export default {
       updateFilter
     }
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
