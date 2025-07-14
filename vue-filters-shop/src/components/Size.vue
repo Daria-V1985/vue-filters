@@ -2,18 +2,26 @@
   <div class="content-item__size" @click="toggleActive" :class="{ active: isActive }">{{ name }}</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+
+export default defineComponent({
   props: {
-    name: String,
-    value: String,        
+    name: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: String,
+      required: true,
+    },        
     modelValue: {
-      type: Array,
+      type: Array as PropType<any>,
       required: true, 
     },
   },
   computed: {
-    isActive() {
+    isActive(): boolean {
       return this.modelValue.includes(this.value); 
     },
   },
@@ -31,7 +39,7 @@ export default {
       this.$emit('update:modelValue', newValue); 
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

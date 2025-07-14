@@ -1,124 +1,49 @@
 <template>
-  <div 
-    v-for="(item, index) in filterItems" 
-    :key="index" 
-    class="filter-catalog__item"
-    :class="{ active: isOpen(index) }"
+  <div class="filter-catalog__item" :class="{ active: isOpen }"
   >
-    <div
-      @click="toggle(index)"
-      class="filter-catalog__item-title" 
-      :class="{ active: isOpen(index) }">
-      {{ item.title }}
+    <div @click="toggle" class="filter-catalog__item-title" :class="{ active: isOpen }">
+      <slot name="title">{{ title }}</slot>
     </div>
-    <div v-show="isOpen(index)" class="filter-catalog__item-content content-item">
-      <component 
-        :is="item.component" 
-        v-bind="item.props"
-        :model-value="selectedFilters[normalize(item.title)]"
-        @update:modelValue="value => updateFilter(normalize(item.title), value)" />
+    <div v-show="isOpen" class="filter-catalog__item-content content-item">
+      <slot />
     </div>
   </div>
 </template>
 
-<script>
-import BrandFilter from '@/components/BrandFilter.vue'
-import SizeFilter from '@/components/SizeFilter.vue'
-import LengthFilter from '@/components/LengthFilter.vue'
-import ColorFilter from '@/components/ColorFilter.vue'
-import PriceFilter from '@/components/PriceFilter.vue'
+<script  lang="ts">
+import { ref, watch, defineComponent } from "vue";
 
-import { onMounted, ref, computed } from "vue";
-import axios from "axios";
-
-export default {
+export default defineComponent({
   name: "Accordion",
-  components: {
-    BrandFilter,
-    SizeFilter,
-    LengthFilter,
-    ColorFilter,
-    PriceFilter,
-  },
   props: {
-    selectedFilters: {
-      type: Object,
+    title: {
+      type: String,
       required: true
+    },
+    modelValue: {
+      type: Boolean,
+      default: false,
     }
   },
-  emits: ['update:selectedFilters'],
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
+    const isOpen = ref(props.modelValue);
 
-    const sizes = ref([]);
-    const colors = ref([]);
-    const brands = ref([]);
-    const lengths = ref([]);
-    const openAccordion = ref([]);
-
-    const filterItems = computed(() => [
-      { title: 'Brand', component: 'BrandFilter', props: { brands: brands.value } },
-      { title: 'Size (Inches)', component: 'SizeFilter', props: { sizes: sizes.value } },
-      { title: 'Dress Length', component: 'LengthFilter', props: { lengths: lengths.value } },
-      { title: 'Color', component: 'ColorFilter', props: { colors: colors.value } },
-      { title: 'Price Range', component: 'PriceFilter', props: { } },
-    ]);
-
-    onMounted(async () => {
-      try {
-        const [brandsResponce, sizesResponce, colorsResponce, lengthsResponce] = await Promise.all([
-          axios.get("https://ba8e5ca6f7d01757.mokky.dev/brands"),
-          axios.get("https://ba8e5ca6f7d01757.mokky.dev/sizes"),
-          axios.get("https://ba8e5ca6f7d01757.mokky.dev/colors"),
-          axios.get("https://ba8e5ca6f7d01757.mokky.dev/lengths"),
-        ]);
-        brands.value = brandsResponce.data;
-        sizes.value = sizesResponce.data;
-        colors.value = colorsResponce.data;
-        lengths.value = lengthsResponce.data;
-      } catch (error) {
-        console.log(error);
-      }
+    watch(() => props.modelValue, (bool) => {
+      isOpen.value = bool;
     });
 
-    function toggle(index) {
-      if (openAccordion.value.includes(index)) {
-        openAccordion.value = openAccordion.value.filter(i => i !== index)
-      } else {
-        openAccordion.value.push(index)
-      }
+    function toggle() {
+      isOpen.value = !isOpen.value;
+      emit('update:modelValue', isOpen.value)
     }
-
-    function isOpen(index) {
-      return openAccordion.value.includes(index)
-    }
-
-    function normalize(title) {
-      switch(title) {
-        case 'Brand': return 'brand';
-        case 'Size (Inches)': return 'size';
-        case 'Dress Length': return 'length';
-        case 'Color': return 'color';
-        case 'Price Range': return 'priceRange';
-        default: return title.toLowerCase();
-      }
-    }
-
-    function updateFilter(key, newVal) {
-      const updatedFilters = { ...props.selectedFilters, [key]: newVal }
-      emit('update:selectedFilters', updatedFilters)
-    }
-
 
     return {
-      filterItems,
       toggle,
       isOpen,
-      normalize,
-      selectedFilter: props.selectedFilters,
-      updateFilter
     }
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
