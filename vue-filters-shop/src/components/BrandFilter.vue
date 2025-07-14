@@ -28,6 +28,7 @@ export default defineComponent({
   props: {
     brands: {
       type: Array as () => brand[],
+      default: () => [],
       required: true
     },
     modelValue: {

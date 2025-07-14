@@ -28,7 +28,8 @@ export default defineComponent({
   props: {
     lengths: {
       type: Array as () => length[],
-      required: true
+      default: () => [],
+      required: true,
     },
     modelValue: {
       type: Array,
@@ -42,7 +43,7 @@ export default defineComponent({
       internalUpdate: false,
     };
   },
-    watch: {
+  watch: {
     modelValue: {
       immediate: true,
       handler(newVal) {
