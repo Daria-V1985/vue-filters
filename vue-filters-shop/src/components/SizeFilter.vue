@@ -12,24 +12,17 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Size from "@/components/Size.vue";
-import { defineComponent } from "vue";
 
-interface size {
-  id:number,
-  name: string,
-  value: string,
-}
-
-export default defineComponent({
+export default {
   name: "SizeFilter",
   components: {
     Size,
   },
   props: {
     sizes: {
-      type: Array as () => size[],
+      type: Array,
       required: true, 
     },
     modelValue: {
@@ -54,7 +47,7 @@ export default defineComponent({
       }
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

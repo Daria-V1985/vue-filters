@@ -10,26 +10,18 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import Length from "@/components/Length.vue";
-import { defineComponent } from "vue";
 
-interface length {
-  id: number,
-  name: string,
-  value: string,
-}
-
-export default defineComponent({
+export default {
   name: "LengthFilter",
   components: {
     Length,
   },
   props: {
     lengths: {
-      type: Array as () => length[],
-      default: () => [],
-      required: true,
+      type: Array,
+      required: true
     },
     modelValue: {
       type: Array,
@@ -39,11 +31,11 @@ export default defineComponent({
   emits: ['update:modelValue'],
   data() {
     return {
-      selectedLengthsMap: {} as Record<string, boolean>,
+      selectedLengthsMap: {},
       internalUpdate: false,
     };
   },
-  watch: {
+    watch: {
     modelValue: {
       immediate: true,
       handler(newVal) {
@@ -51,7 +43,7 @@ export default defineComponent({
           this.internalUpdate = false;
           return;
         }
-        const map: Record<string, boolean> = {};
+        const map = {};
         this.lengths.forEach(length => {
           map[length.name] = newVal.includes(length.name);
         });
@@ -67,7 +59,7 @@ export default defineComponent({
       }
     }
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

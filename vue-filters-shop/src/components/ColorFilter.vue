@@ -12,24 +12,17 @@
   </div>
 </template>
 
-<script lang="ts">
+<script >
 import Color from "@/components/Color.vue";
-import { defineComponent } from "vue";
 
-interface color {
-  id: number,
-  background: string,
-  value: string,
-}
-
-export default defineComponent({
+export default {
   name: "ColorFilter",
   components: {
     Color,
   },
   props: {
     colors: {
-      type: Array as () => color[],
+      type: Array,
       required: true, 
     },
     modelValue: {
@@ -47,7 +40,7 @@ export default defineComponent({
       this.$emit('update:modelValue', newColors); 
     }
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

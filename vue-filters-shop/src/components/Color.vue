@@ -4,26 +4,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
-
-export default defineComponent({
+<script>
+export default {
   props: {
-    background: {
-      type: String,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: true,
-    },      
+    background: String,
+    value: String,        
     modelValue: {
-      type: Array as PropType<any>,  // PropType<any> говорит: "Этот пропс может принимать значение любого типа"
+      type: Array,
       required: true, 
     },
   },
   computed: {
-    isActive(): boolean {
+    isActive() {
       return this.modelValue.includes(this.value); 
     },
   },
@@ -41,7 +33,7 @@ export default defineComponent({
       this.$emit('update:modelValue', newValue); 
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

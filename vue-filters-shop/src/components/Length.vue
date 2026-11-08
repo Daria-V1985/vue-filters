@@ -5,38 +5,27 @@
         class="checkbox__input" 
         type="checkbox" 
         :value="value" 
-        :checked="modelValue"
+        :checked="checked"
         @change="onChange"
       />
       <label :for="value.name" class="checkbox__label">{{ value.name }}</label>
     </div>
 </template>
 
-<script  lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
+<script>
+export default {
   props: {
-    name: {
-      type: String,
-    },
-    value: {
-      type: Object,
-      required: true,
-    },
-    modelValue: {
-      type: Boolean,
-      required: true,
-    },
+    name: String,
+    value: Object,
+    modelValue: Boolean,
   },
   emits: ['update:modelValue'],
   methods: {
-    onChange(event: Event) {
-      const target = event.target as HTMLInputElement;
-      this.$emit( 'update:modelValue', target.checked );
+    onChange(event) {
+      this.$emit( 'update:modelValue', event.target.checked );
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

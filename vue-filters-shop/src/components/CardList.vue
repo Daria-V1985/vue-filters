@@ -12,31 +12,18 @@
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import TheCard from "@/components/TheCard.vue";
-import { defineComponent } from "vue";
 
-interface Item {
-  id: number,
-  category: string,
-  title: string,
-  imageUrl: string,
-  price: number,
-  color: string
-}
-
-export default defineComponent({
+export default {
   name: "CardList",
   components: {
     TheCard,
   },
   props: {
-    items: {
-      type: Array as () => Item[],  // поле, в котором указывается конструктор типа пропса: это массив элементов типа Item. Но чтобы Vue и TypeScript правильно поняли, что это массив объектов типа Item, нужно явно указать тип с помощью приведения типа (as).
-      required: true,  // Говорит Vue, что компонент не сможет корректно работать без этого пропса. Пропс обязателен для передачи в компонент, Vue предупреждает при отсутствии.
-    }
+    items: Array,
   }
-});
+};
 </script>
 
 <style lang="scss" scoped>

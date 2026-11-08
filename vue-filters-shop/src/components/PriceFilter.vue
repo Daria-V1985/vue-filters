@@ -10,33 +10,32 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Slider from '@vueform/slider';
-import { defineComponent, PropType } from 'vue';
 
-export default defineComponent({
+export default {
   name: "PriceFilter",
   components: { 
     Slider 
   },
   props: {
     modelValue: {
-      type: Array as PropType<number[]>,  // тип пропса modelValue как массив чисел
+      type: Array,
       default: () => [0, 100]
     }
   },
   emits: ['update:modelValue'],
   computed: {
     value: {
-      get(): number[] {
+      get() {
         return this.modelValue;
       },
-      set(val: number[]) {
+      set(val) {
         this.$emit('update:modelValue', val);
       }
     }
   }
-});
+};
 </script>
 
 <style lang="scss" scoped>

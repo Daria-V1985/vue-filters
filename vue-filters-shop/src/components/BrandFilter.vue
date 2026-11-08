@@ -10,25 +10,17 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Brand from "@/components/Brand.vue";
-import { defineComponent } from "vue";
 
-interface brand {
-  id: number,
-  name: string,
-  value: string,
-}
-
-export default defineComponent({
+export default {
   name: "BrandFilter",
   components: {
     Brand,
   },
   props: {
     brands: {
-      type: Array as () => brand[],
-      default: () => [],
+      type: Array,
       required: true
     },
     modelValue: {
@@ -39,26 +31,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   data() {
     return {
-      selectedBrandsMap: {} as Record<string, boolean>,  /* Строка делает следующее:
-
-    selectedBrandsMap — это переменная (например, поле в data или свойство объекта).
-    {} — пустой объект, который инициализируется как начальное значение.
-    as Record<string, boolean> — приведение типа (type assertion), говорящая TypeScript, что этот пустой объект должен рассматриваться как объект, у которого:
-        ключи — строки (string),
-        значения — булевы (boolean).
-
-    Что такое Record<string, boolean>?
-
-      Это встроенный в TypeScript дженерик-тип, эквивалентный записи типа: { [key: string]: boolean }
-      То есть объект, где: ключи — строки, значения — булевы.
-
-    Зачем так писать?
-
-        Чтобы TypeScript знал, что selectedBrandsMap — объект с ключами-строками и булевыми значениями.
-        Позволяет безопасно обращаться к selectedBrandsMap[brand.name] и ожидать, что результат — булево.
-        Без этого приведения типа TypeScript может считать selectedBrandsMap просто пустым объектом с типом {}, и при обращении к динамическим ключам будет ошибка или предупреждение.
-
-    {} as Record<string, boolean> — это способ сказать TypeScript: «Вот пустой объект, но он будет использоваться как словарь с ключами-строками и булевыми значениями». */
+      selectedBrandsMap: {},
       internalUpdate: false,
     };
   },
@@ -70,7 +43,7 @@ export default defineComponent({
           this.internalUpdate = false;
           return;
         }
-        const map: Record<string, boolean> = {};
+        const map = {};
         this.brands.forEach(brand => {
           map[brand.name] = newVal.includes(brand.name);
         });
@@ -86,7 +59,7 @@ export default defineComponent({
       }
     }
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>
