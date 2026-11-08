@@ -1,0 +1,16 @@
+@import 'basic';
+
+.catalog {
+  &__container {
+    max-width: 1440px;
+    padding: 60px 0;
+    margin: 0 auto;
+  }
+  &__body {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 20px;
+  }
+}
+
+@import 'range';
